@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import HUser, Circle, CircleMember
 from .permissions import IsHUserOwner
-from .serializers import HUserRegisterSerializer,HUserUpdateSerializer, HUserAuthSerializer
+from .serializers import HUserRegisterSerializer,HUserUpdateSerializer
 from .serializers import CircleListSerializer, CircleUpdateSerializer
 from .serializers import CircleMemberListSerializer, CircleMemberSerializer
 

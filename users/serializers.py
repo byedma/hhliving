@@ -95,19 +95,6 @@ class HUserUpdateSerializer(serializers.ModelSerializer):
 
 
 
-class HUserAuthSerializer(serializers.ModelSerializer):
-    # id = serializers.IntegerField(label='ID', read_only=True)
-    password = serializers.CharField(write_only=True, required=False)
-    confirm_password = serializers.CharField(write_only=True, required=False)
-
-    class Meta:
-        model = HUser
-        fields = ('email', 'password')
-        lookup_field = ('email',)
-        def authenticate(self, instance, validated_data):
-            instance.email = validated_data.get('email', instance.email)
-            instance.passowrd = validated_data.get('password', instance.password)
-
 class CircleListSerializer(serializers.ModelSerializer):
 
     class Meta:

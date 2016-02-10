@@ -19,7 +19,6 @@ from django.conf.urls.static import static
 
 from users import urls as users_urls
 from hhliving import settings
-from users import views as user_views
 
 from rest_framework import routers
 from users import viewsets as users_viewsets
@@ -41,8 +40,6 @@ router.register(r'habitreviews', habits_viewsets.HabitReviewListViewSet)
 #router.register(r'^edit_users/(?P<pk>[0-9]+)$/edit_circles/(?P<pk>[0-9]+)$', users_viewsets.CircleMemberViewSet)
 
 urlpatterns = [
-    url(r'^$', user_views.index, name='index'),
-    url(r'^users/', include(users_urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
