@@ -25,6 +25,7 @@ from rest_framework import routers
 from users import viewsets as users_viewsets
 from habits import viewsets as habits_viewsets
 
+
 router = routers.DefaultRouter()
 router.register(r'users', users_viewsets.HUserViewSet)
 router.register(r'edit_users', users_viewsets.HUserEditViewSet)
@@ -35,7 +36,7 @@ router.register(r'edit_circlemembers', users_viewsets.CircleMemberEditViewSet)
 router.register(r'habits', habits_viewsets.HabitListViewSet)
 router.register(r'habitservices', habits_viewsets.HabitServiceListViewSet)
 router.register(r'edit_habitservices', habits_viewsets.HabitServiceUpdateViewSet)
-router.register(r'circlemembers', habits_viewsets.HabitReviewListViewSet)
+router.register(r'habitreviews', habits_viewsets.HabitReviewListViewSet)
 
 #router.register(r'^edit_users/(?P<pk>[0-9]+)$/edit_circles/(?P<pk>[0-9]+)$', users_viewsets.CircleMemberViewSet)
 
@@ -46,4 +47,5 @@ urlpatterns = [
     url(r'^api/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^docs/', include('rest_framework_docs.urls')),
+
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

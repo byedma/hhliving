@@ -8,11 +8,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import HUser, Circle, CircleMember
 from .permissions import IsHUserOwner
-from .serializers import HUserRegisterSerializer,HUserUpdateSerializer
+from .serializers import HUserRegisterSerializer,HUserUpdateSerializer, HUserAuthSerializer
 from .serializers import CircleListSerializer, CircleUpdateSerializer
 from .serializers import CircleMemberListSerializer, CircleMemberSerializer
 
-
+from django.contrib.auth import authenticate, login, logout
+import json
 
 class HUserViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
@@ -121,8 +122,10 @@ class CircleEditViewSet(viewsets.ModelViewSet):
 
 
 class CircleMemberListViewSet(viewsets.ModelViewSet):
+
     queryset = CircleMember.objects.all()
     serializer_class = CircleMemberListSerializer
+
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -162,3 +165,5 @@ class CircleMemberEditViewSet(viewsets.ModelViewSet):
 
         if self.request.method == 'DELETE':
             return (permissions.AllowAny(),)
+
+

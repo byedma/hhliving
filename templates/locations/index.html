@@ -1,0 +1,17 @@
+<h1>District List</h1>
+{% extends "base.html" %}
+
+<div class="col-md-8"> 
+  {% block content %}
+  {% if district_list %}
+      <ul>
+      {% for district in district_list %}
+          <li><a href="/locations/{{ district.id }}/">{{ district.name }}</a></li>
+      {% endfor %}
+      </ul>
+  {% else %}
+      <p>No data is available.</p>
+  {% endif %}
+
+  {% endblock %}
+</div>

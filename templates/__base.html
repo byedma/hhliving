@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Happy Health Living India Ltd</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    {% include 'material/includes/material_css.html' %}
+    {% include 'material/includes/material_js.html' %}
+  </head>
+  <body>
+
+
+    <div class="container">
+      <div> {% include  '_navbar.html' %} </div>
+
+      <div id="messages">
+          {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{message.tags}}">
+              <a class="close" data-dismiss="alert">×</a>
+              {{message}}
+            </div>
+          {% endfor %}
+          {% endif %}
+      </div>
+
+        {% block content %}
+        {% endblock %}
+        
+    </div>
+    <!-- <hr class="featurette-divider">
+    <footer>
+           <p class="pull-right"><a href="/#">Back to top</a></p>
+           <p class="pull-left">&copy; 2016 <a href="http://realpython.com">Happy Health Living India Ltd</a></p> 
+          <p class="text-center"> &middot;  Powered by Django 1.9 &middot; </p>
+    </footer> -->
+    <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/application.js' %}"></script>
+  </body>
+</html>

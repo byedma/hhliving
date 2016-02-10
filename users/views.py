@@ -4,12 +4,15 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
-from django.contrib import messages
-
-from .forms import LoginForm
+import json
+from rest_framework.response import Response
+from rest_framework import status
 from .forms import RegistrationForm
-
+from rest_framework import views
+from .serializers import HUserAuthSerializer
 # Create your views here.
+
+
 def index(request):
     return render_to_response('index.html')
 
@@ -19,27 +22,41 @@ def home(request):
 def user_landing_view(request):
     return render_to_response('landing.html')
 
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            customer = authenticate(email=request.POST['email'], password=request.POST['password'])
-            if customer is not None:
-                if customer.is_active:
-                    login(request, customer)
-                    messages.error(request, "Login succesful")
-                    return redirect('landing')
-                else:
-                    return redirect('home')
+class LoginView(views.APIView):
+
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return (permissions.AllowAny(),)
+
+        if self.request.method == 'POST':
+            return (permissions.AllowAny(),)
+
+    def post(self, request, format=None):
+        data = json.loads(request.body)
+
+        email = data.get('email', None)
+        password = data.get('password', None)
+
+        account = authenticate(email=email, password=password)
+
+        if account is not None:
+            if account.is_active:
+                login(request, account)
+
+                serialized = HUserAuthSerializer(account)
+
+                return Response(serialized.data)
             else:
-                messages.error(request, "Please Check Userid/password is wrong")
+                return Response({
+                    'status': 'Unauthorized',
+                    'message': 'This account has been disabled.'
+                }, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            pass
+            return Response({
+                'status': 'Unauthorized',
+                'message': 'Username/password combination invalid.'
+            }, status=status.HTTP_401_UNAUTHORIZED)
 
-    else:
-        form = LoginForm()
-
-    return render(request, 'users/login_form.html', {'form': form})
 
 def logout_view(request):
     logout(request)
@@ -55,3 +72,5 @@ def register_view(request):
         form = RegistrationForm()
 
     return render(request, 'users/registration_form.html', {'form': form})
+
+

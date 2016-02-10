@@ -1,0 +1,40 @@
+
+ <form role="form" ng-submit="update()">
+        <div class="form-group">
+          <label for="register__email">Email</label>
+          <input type="email" class="form-control" id="register__email" ng-model="user.email" placeholder="ex. ben@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="register__first_name">FirstName</label>
+          <input type="text" class="form-control" id="register__first_name" ng-model="user.first_name" placeholder="ex. ben" />
+        </div>
+
+        <div class="form-group">
+          <label for="register__last_name">LastName</label>
+          <input type="text" class="form-control" id="register__last_name" ng-model="user.last_name" placeholder="ex. ben" />
+        </div>
+
+          <div class="form-group">
+          <label for="register__title">Title</label>
+          <select name="title" class="form-control" id="register__title" ng-model="user.title">
+            <option value="MRS">Mrs</option>
+            <option value="MR" selected>Mr</option>
+            <option value="DR">Dr</option>
+            <option value="OTH">Others</option>
+          </select>
+        </div>
+
+          <div class="form-group">
+          <label for="register__title">Gender</label>
+          <select name="gender" class="form-control" id="register__gender" ng-model="user.gender">
+            <option value="M" selected>Male</option>
+            <option value="F">Female</option>
+            <option value="O">Others</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </form>
