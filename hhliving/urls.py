@@ -23,6 +23,7 @@ from hhliving import settings
 from rest_framework import routers
 from users import viewsets as users_viewsets
 from habits import viewsets as habits_viewsets
+from users import views as users_views
 
 
 router = routers.DefaultRouter()
@@ -44,5 +45,7 @@ urlpatterns = [
     url(r'^api/v1/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^docs/', include('rest_framework_docs.urls')),
+    url(r'^api/v1/login/$', users_views.LoginView.as_view(), name='login'),
+    url(r'^api/v1/logout/$', users_views.LogoutView.as_view(), name='logout'),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

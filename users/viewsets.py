@@ -96,7 +96,7 @@ class CircleListViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
 
             Circle.objects.create_circle(**serializer.validated_data)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
 
