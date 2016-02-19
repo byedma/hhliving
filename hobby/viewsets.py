@@ -100,6 +100,14 @@ class HobbyReviewListViewSet(viewsets.ModelViewSet):
         print serializer.errors
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def list(self, request, *args, **kwargs):
+        hobby = request.GET.get('hobby_id',None)
+        queryset= self.queryset
+        if hobby is not None:
+            queryset = self.queryset.filter(hobby_id=hobby)
+        serializer = self.serializer_class(queryset,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
 
     @detail_route()
     def user_reviews(self, request, id):
