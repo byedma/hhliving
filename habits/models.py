@@ -12,7 +12,7 @@ habit_gender_choices = (
 
 class HabitManager(models.Manager):
 
-    def create_habit(self, **validated_data):
+    def create(self, **validated_data):
         """
         Creates and saves circle.
         """
@@ -55,9 +55,11 @@ class Habit(models.Model):
                                            help_text='identifies the eligible genders who can subscribe to this habit',)
 
 
+
+
 class HabitServiceManager(models.Manager):
 
-    def create_habitservice(self, **validated_data):
+    def create(self, **validated_data):
         """
         Creates and saves circle.
         """
@@ -98,7 +100,7 @@ class HabitService(models.Model):
 
 class HabitReviewManager(models.Manager):
 
-    def create_habitreview(self, **validated_data):
+    def create(self, **validated_data):
         """
         Creates and saves circle.
         """

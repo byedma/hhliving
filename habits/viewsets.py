@@ -22,8 +22,8 @@ class HabitListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            Habit.objects.create_habit(**serializer.validated_data)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            Habit.objects.create(**serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
 
@@ -48,8 +48,8 @@ class HabitServiceListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            HabitService.objects.create_habit(**serializer.validated_data)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            HabitService.objects.create(**serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
 
@@ -93,8 +93,8 @@ class HabitReviewListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            HabitService.objects.create_habit(**serializer.validated_data)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            HabitService.objects.create(**serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
 

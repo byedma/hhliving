@@ -15,7 +15,7 @@ class HabitListSerializer(serializers.ModelSerializer):
             return Habit.objects.create(**validated_data)
 
 
-class HabitServiceListSerializer():
+class HabitServiceListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HabitService
@@ -26,7 +26,7 @@ class HabitServiceListSerializer():
             return HabitService.objects.create(**validated_data)
 
 
-class HabitServiceUpdateSerializer():
+class HabitServiceUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HabitService
@@ -40,7 +40,7 @@ class HabitServiceUpdateSerializer():
             instance.end_date = validated_data.get('end_date', instance.end_date)
 
 
-class HabitReviewListSerializer():
+class HabitReviewListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HabitReview

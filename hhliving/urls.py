@@ -24,6 +24,7 @@ from rest_framework import routers
 from users import viewsets as users_viewsets
 from habits import viewsets as habits_viewsets
 from hobby import viewsets as hobby_viewsets
+from routine import viewsets as routine_viewsets
 from users import views as users_views
 
 
@@ -42,6 +43,10 @@ router.register(r'hobbys', hobby_viewsets.HobbyListViewSet)
 router.register(r'hobbyservices', hobby_viewsets.HobbyServiceListViewSet)
 router.register(r'edit_hobbyservices', hobby_viewsets.HobbyServiceUpdateViewSet)
 router.register(r'hobbyreviews', hobby_viewsets.HobbyReviewListViewSet)
+router.register(r'routines', routine_viewsets.RoutineListViewSet)
+router.register(r'routineservices', routine_viewsets.RoutineServiceListViewSet)
+router.register(r'edit_routineservices', routine_viewsets.RoutineServiceUpdateViewSet)
+router.register(r'routinereviews', routine_viewsets.RoutineReviewListViewSet)
 
 #router.register(r'^edit_users/(?P<pk>[0-9]+)$/edit_circles/(?P<pk>[0-9]+)$', users_viewsets.CircleMemberViewSet)
 
