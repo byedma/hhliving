@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('rating', models.SmallIntegerField(help_text='identifies the customers rating', choices=[(1, '*'), (2, '**'), (3, '***'), (4, '****'), (5, '*****')])),
                 ('comments', models.TextField(help_text='customers review comments', blank=True)),
                 ('customer_id', models.ForeignKey(help_text='identifies the customer who gave the rating and wrote a review', to=settings.AUTH_USER_MODEL)),
-                ('hobby_id', models.ForeignKey(help_text='uniquely identifies the hobby', to='hobby.Hobby')),
+                ('hobby_id', models.ForeignKey(help_text='uniquely identifies the hobby', to='hobbys.Hobby')),
             ],
         ),
         migrations.CreateModel(
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('end_date', models.DateField(blank=True)),
                 ('creation_timestamp', models.DateTimeField(help_text='date and time when customer first subscribed to this Hobby', auto_now_add=True)),
                 ('last_update_timestamp', models.DateTimeField(help_text='date and time when customer last updated this Hobby', auto_now=True)),
-                ('hobby_id', models.ForeignKey(help_text='identifies the hobby template to which customer subscribed to', to='hobby.Hobby')),
+                ('hobby_id', models.ForeignKey(help_text='identifies the hobby template to which customer subscribed to', to='hobbys.Hobby')),
                 ('user_id', models.ForeignKey(help_text='identifies the customer signed up for the hobby', to=settings.AUTH_USER_MODEL)),
             ],
         ),

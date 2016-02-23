@@ -93,9 +93,17 @@ class HabitReviewListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            HabitService.objects.create(**serializer.validated_data)
+            HabitReview.objects.create(**serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def list(self, request, *args, **kwargs):
+        habit = request.GET.get('habit_id',None)
+        queryset= self.queryset
+        if habit is not None:
+            queryset = self.queryset.filter(habit_id=habit)
+        serializer = self.serializer_class(queryset,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
