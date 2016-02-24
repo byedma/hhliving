@@ -30,6 +30,17 @@ class HobbyListViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # url: hobbys/id/subscribed_hobbys    gives the all the hobbys that user has subscribed to.
+    @detail_route()
+    def subscribed_hobbys(self, request, id):
+        #print id
+        user =  id
+        data = Hobby.objects.raw('SELECT * FROM hobbys_hobby WHERE id IN (SELECT hobby_id_id '
+                                'FROM hobbys_hobbyservice WHERE user_id_id=%s)',[user])
+        print data
+        serializer = self.serializer_class(data,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
 
 class HobbyServiceListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'

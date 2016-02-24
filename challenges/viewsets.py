@@ -2,13 +2,13 @@ from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import detail_route, list_route
-from .models import HabitService, Habit, HabitReview
-from .serializers import HabitListSerializer, HabitServiceListSerializer, HabitReviewListSerializer, HabitServiceUpdateSerializer
+from .models import ChallengeService, Challenge, ChallengeReview
+from .serializers import ChallengeListSerializer, ChallengeServiceListSerializer, ChallengeReviewListSerializer, ChallengeServiceUpdateSerializer
 
-class HabitListViewSet(viewsets.ModelViewSet):
+class ChallengeListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
-    queryset = Habit.objects.all()
-    serializer_class = HabitListSerializer
+    queryset = Challenge.objects.all()
+    serializer_class = ChallengeListSerializer
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -23,31 +23,30 @@ class HabitListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            Habit.objects.create(**serializer.validated_data)
+            Challenge.objects.create(**serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-    # url: habits/id/subscribed_habits    gives the all the habits that user has subscribed to.
+    # url: challenges/id/subscribed_challenges    gives the all the challenges that user has subscribed to.
     @detail_route()
-    def subscribed_habits(self, request, id):
+    def subscribed_challenges(self, request, id):
         #print id
         user =  id
-        data = Challenge.objects.raw('SELECT * FROM habits_habit WHERE id IN (SELECT habit_id_id '
-                                'FROM habits_habitservice WHERE user_id_id=%s)',[user])
+        data = Challenge.objects.raw('SELECT * FROM challenges_challenge WHERE id IN (SELECT challenge_id_id '
+                                'FROM challenges_challengeservice WHERE user_id_id=%s)',[user])
         print data
         serializer = self.serializer_class(data,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
 
 
-class HabitServiceListViewSet(viewsets.ModelViewSet):
+class ChallengeServiceListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
-    queryset = HabitService.objects.all()
-    serializer_class = HabitServiceListSerializer
+    queryset = ChallengeService.objects.all()
+    serializer_class = ChallengeServiceListSerializer
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -62,7 +61,7 @@ class HabitServiceListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            HabitService.objects.create(**serializer.validated_data)
+            ChallengeService.objects.create(**serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
@@ -70,10 +69,10 @@ class HabitServiceListViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class HabitServiceUpdateViewSet(viewsets.ModelViewSet):
+class ChallengeServiceUpdateViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
-    queryset = HabitService.objects.all()
-    serializer_class = HabitServiceUpdateSerializer
+    queryset = ChallengeService.objects.all()
+    serializer_class = ChallengeServiceUpdateSerializer
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -89,10 +88,10 @@ class HabitServiceUpdateViewSet(viewsets.ModelViewSet):
 
 
 
-class HabitReviewListViewSet(viewsets.ModelViewSet):
+class ChallengeReviewListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
-    queryset = HabitReview.objects.all()
-    serializer_class = HabitReviewListSerializer
+    queryset = ChallengeReview.objects.all()
+    serializer_class = ChallengeReviewListSerializer
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -107,17 +106,31 @@ class HabitReviewListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            HabitReview.objects.create(**serializer.validated_data)
+            ChallengeReview.objects.create(**serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     def list(self, request, *args, **kwargs):
-        habit = request.GET.get('habit_id',None)
+        challenge = request.GET.get('challenge_id',None)
         queryset= self.queryset
-        if habit is not None:
-            queryset = self.queryset.filter(habit_id=habit)
+        if challenge is not None:
+            queryset = self.queryset.filter(challenge_id=challenge)
         serializer = self.serializer_class(queryset,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+    @detail_route()
+    def user_reviews(self, request, id):
+        #print id
+        user =  id
+        data = self.queryset.filter(user_id=user)
+        serializer = self.serializer_class(data,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+    @list_route()
+    def reviews(self,request):
+        user = request.GET['user_id']
+        data = self.queryset.filter(user_id=user)
+        serializer = self.serializer_class(data,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)

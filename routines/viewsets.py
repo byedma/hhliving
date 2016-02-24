@@ -30,6 +30,18 @@ class RoutineListViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # url: routines/id/subscribed_routines    gives the all the routines that user has subscribed to.
+    @detail_route()
+    def subscribed_routines(self, request, id):
+        #print id
+        user =  id
+        data = Routine.objects.raw('SELECT * FROM routines_routine WHERE id IN (SELECT routine_id_id '
+                                'FROM routines_routineservice WHERE user_id_id=%s)',[user])
+        print data
+        serializer = self.serializer_class(data,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+
 
 class RoutineServiceListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
@@ -126,3 +138,5 @@ class RoutineReviewListViewSet(viewsets.ModelViewSet):
         data = self.queryset.filter(user_id=user)
         serializer = self.serializer_class(data,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+
+
