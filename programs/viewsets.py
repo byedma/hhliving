@@ -34,6 +34,16 @@ class ProgramListViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    # urls: /programs & /programs?health_condition_id='id'
+    def list(self, request, *args, **kwargs):
+        health_condition = request.GET.get('health_condition_id',None)
+        queryset= self.queryset
+        if health_condition is not None:
+            queryset = self.queryset.filter(health_condition_id=health_condition)
+        serializer = self.serializer_class(queryset,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+
     # url: programs/id/subscribed_programs    gives the all the programs that user has subscribed to.
     @detail_route()
     def subscribed_programs(self, request, id):
@@ -83,6 +93,7 @@ class ProgramListViewSet(viewsets.ModelViewSet):
                                 'FROM programs_programcomponent WHERE (program_id_id=%s AND component_type=%s)',[program_id,'HA'])
         serializer = self.serializer_class(data,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+
 
 
 class ProgramServiceListViewSet(viewsets.ModelViewSet):
