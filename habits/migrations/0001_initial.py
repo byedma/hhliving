@@ -48,12 +48,5 @@ class Migration(migrations.Migration):
                 ('habit_id', models.ForeignKey(help_text='identifies the habit template to which customer subscribed to', to='habits.Habit')),
                 ('user_id', models.ForeignKey(help_text='identifies the customer signed up for the habit', to=settings.AUTH_USER_MODEL)),
             ],
-        ),
-        migrations.CreateModel(
-            name='myhabit',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('age', models.SmallIntegerField(help_text='age test')),
-            ],
-        ),
+        )
     ]

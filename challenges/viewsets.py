@@ -112,6 +112,7 @@ class ChallengeReviewListViewSet(viewsets.ModelViewSet):
         print serializer.errors
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def list(self, request, *args, **kwargs):
         challenge = request.GET.get('challenge_id',None)
         queryset= self.queryset

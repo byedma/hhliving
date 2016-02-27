@@ -23,8 +23,10 @@ from hhliving import settings
 from rest_framework import routers
 from users import viewsets as users_viewsets
 from habits import viewsets as habits_viewsets
-from hobby import viewsets as hobby_viewsets
-from routine import viewsets as routine_viewsets
+from hobbys import viewsets as hobbys_viewsets
+from routines import viewsets as routines_viewsets
+from challenges import viewsets as challenges_viewsets
+from programs import viewsets as programs_viewsets
 from users import views as users_views
 
 
@@ -39,14 +41,23 @@ router.register(r'habits', habits_viewsets.HabitListViewSet)
 router.register(r'habitservices', habits_viewsets.HabitServiceListViewSet)
 router.register(r'edit_habitservices', habits_viewsets.HabitServiceUpdateViewSet)
 router.register(r'habitreviews', habits_viewsets.HabitReviewListViewSet)
-router.register(r'hobbys', hobby_viewsets.HobbyListViewSet)
-router.register(r'hobbyservices', hobby_viewsets.HobbyServiceListViewSet)
-router.register(r'edit_hobbyservices', hobby_viewsets.HobbyServiceUpdateViewSet)
-router.register(r'hobbyreviews', hobby_viewsets.HobbyReviewListViewSet)
-router.register(r'routines', routine_viewsets.RoutineListViewSet)
-router.register(r'routineservices', routine_viewsets.RoutineServiceListViewSet)
-router.register(r'edit_routineservices', routine_viewsets.RoutineServiceUpdateViewSet)
-router.register(r'routinereviews', routine_viewsets.RoutineReviewListViewSet)
+router.register(r'hobbys', hobbys_viewsets.HobbyListViewSet)
+router.register(r'hobbyservices', hobbys_viewsets.HobbyServiceListViewSet)
+router.register(r'edit_hobbyservices', hobbys_viewsets.HobbyServiceUpdateViewSet)
+router.register(r'hobbyreviews', hobbys_viewsets.HobbyReviewListViewSet)
+router.register(r'routines', routines_viewsets.RoutineListViewSet)
+router.register(r'routineservices', routines_viewsets.RoutineServiceListViewSet)
+router.register(r'edit_routineservices', routines_viewsets.RoutineServiceUpdateViewSet)
+router.register(r'routinereviews', routines_viewsets.RoutineReviewListViewSet)
+router.register(r'challenges', challenges_viewsets.ChallengeListViewSet)
+router.register(r'challengeservices', challenges_viewsets.ChallengeServiceListViewSet)
+router.register(r'edit_challengeservices', challenges_viewsets.ChallengeServiceUpdateViewSet)
+router.register(r'challengereviews', challenges_viewsets.ChallengeReviewListViewSet)
+router.register(r'programs', programs_viewsets.ProgramListViewSet)
+router.register(r'programservices', programs_viewsets.ProgramServiceListViewSet)
+router.register(r'edit_programservices', programs_viewsets.ProgramServiceUpdateViewSet)
+router.register(r'programreviews', programs_viewsets.ProgramReviewListViewSet)
+router.register(r'healthconditions', programs_viewsets.HealthConditionListViewSet)
 
 #router.register(r'^edit_users/(?P<pk>[0-9]+)$/edit_circles/(?P<pk>[0-9]+)$', users_viewsets.CircleMemberViewSet)
 

@@ -4,23 +4,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-program_gender_choices = (
-        ('F', 'Female'),
-        ('M', 'Male'),
-        ('B', 'Both'),
-    )
+from library.models import HealthComponent, HealthService, Review, gender_choices
 
-class ServiceTemplate(models.Model):
-    name = models.CharField(max_length=50, help_text='Name of the modeled program')
-    short_desc = models.CharField(max_length=500, help_text='')
-    text = models.TextField(help_text='full text of the program with risks and benefits applicable',)
-    suggested_age_lower = models.SmallIntegerField(help_text='identifies the subscribers lowest eligible age limit',)
-    suggested_age_upper = models.SmallIntegerField(help_text='identifies the subscribers upper eligible age limit',)
-    available_to_gender = models.CharField(max_length=1, choices=program_gender_choices,
-                                           help_text='identifies the eligible genders who can subscribe to this habit',)
-
-
-class HealthConditinManager(models.Manager):
+class HealthConditionManager(models.Manager):
     def create(self,**validated_data):
         HealthCondition = self.model(
             health_condition = validated_data.get('health_condition',None),
@@ -49,19 +35,19 @@ class HealthCondition(models.Model):
         ('CHEST', 'Chest'),
     )
 
-    objects = HealthConditinManager()
+    objects = HealthConditionManager()
 
     health_condition = models.CharField(max_length=50, choices=health_condition_choices,
                                         help_text='health condition ex: Diabetes',)
     body_part = models.CharField(max_length=30, choices=body_part_choices, default='General',
                                  help_text=' Body part, ex: eye',)
-    gender = models.CharField(max_length=1, default='B', choices=program_gender_choices, help_text='gender ex: Female',)
+    gender = models.CharField(max_length=1, default='B', choices=gender_choices, help_text='gender ex: Female',)
 
     class Meta:
         unique_together = (('health_condition', 'body_part', 'gender'),)
 
 
-class ProgramManger(models.Manager):
+class ProgramManager(models.Manager):
     def create(self,**validated_data):
         Program = self.model(
             name = validated_data.get('name', None),
@@ -77,26 +63,13 @@ class ProgramManger(models.Manager):
         Program.save(using=self._db)
         return Program
 
-class Program(ServiceTemplate):
-    program_status_choices = (
-        ('UC', 'UnderConstruction'),
-        ('UR', 'UnderReview'),
-        ('SU', 'Submitted'),
-        ('PU', 'Published'),
 
-    )
-    objects = ProgramManger()
-    status = models.CharField(max_length=2, choices=program_status_choices,
-                              help_text='different statuses available for program')
+class Program(HealthComponent):
+    health_condition_id = models.ForeignKey('HealthCondition',
+                                            help_text='each program is associated with a health condition' )
+    objects = ProgramManager()
 
-    health_condition = models.ForeignKey('HealthCondition',
-                                         help_text='A program is prescribed based on health condition, '
-                                                   'body part, gender combination',)
-    creation_timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, editable=False,
-                                              help_text='date and time when customer first subscribed to this Hobby',)
-    #created at UnderConstruction or Submitted, publish timestamp after status is set to published
-    publish_timestamp = models.DateTimeField(null=True,
-                                             help_text='date and time when customer first subscribed to this Hobby',)
+
 
 class ProgramComponentManager(models.Manager):
     def create(self,**validated_data):
@@ -107,6 +80,7 @@ class ProgramComponentManager(models.Manager):
         )
         ProgramComponent.save(using=self._db)
         return ProgramComponent
+
 
 class ProgramComponent(models.Model):
     component_type_choices =(
@@ -122,19 +96,6 @@ class ProgramComponent(models.Model):
     component_id = models.IntegerField(help_text='identifies the unique component like a Habit or Hobby')
 
 
-class Service(models.Model):
-    program_service_status_choices = (
-       ('E', 'Effective'), ('D', 'Dormant'), ('C', 'Completed')
-    )
-    user_id = models.ForeignKey('users.HUser', on_delete=models.CASCADE,
-                                      help_text='identifies the customer signed up for the program',)
-    nick_name = models.CharField(max_length=50,
-                                 help_text='customer given name for the program, like "my diabetes type2 program"')
-    status = models.CharField(max_length=1, choices=program_service_status_choices,
-                              help_text='status of the program status')
-    end_date = models.DateField(blank=True, help_text='')
-
-
 class ProgramServiceManager(models.Manager):
     def create(self,**validated_data):
         ProgramService = self.model(
@@ -148,31 +109,11 @@ class ProgramServiceManager(models.Manager):
         return ProgramService
 
 
-
-class ProgramService(Service):
+class ProgramService(HealthService):
     #default id field generated by django serves as uniquely identifying field for program service
     objects = ProgramServiceManager()
     program_id = models.ForeignKey('Program', on_delete=models.CASCADE,
                                  help_text='identifies the program template to which customer subscribed to')
-    creation_timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, editable=False,
-                                              help_text='date and time when customer first subscribed to this program',)
-
-    last_update_timestamp = models.DateTimeField(auto_now_add=False, auto_now=True,
-                                                 help_text='date and time when customer last updated this program')
-
-
-class Review(models.Model):
-    rating_choices = (
-        (1, '*'),
-        (2, '**'),
-        (3, '***'),
-        (4, '****'),
-        (5, '*****')
-    )
-    user_id = models.ForeignKey('users.HUser', on_delete=models.CASCADE,
-                                help_text='identifies the user who gave the rating and worote a review')
-    rating = models.SmallIntegerField(choices=rating_choices,help_text='identifies the users rating')
-    comments = models.TextField(blank=True, help_text='users review comments')
 
 
 class ProgramReviewManager(models.Manager):
@@ -191,9 +132,6 @@ class ProgramReviewManager(models.Manager):
 
         ProgramReview.save(using=self._db)
         return ProgramReview
-
-
-
 
 
 class ProgramReview(Review):

@@ -47,8 +47,6 @@ class ChallengeServiceUpdateSerializer(serializers.ModelSerializer):
             instance.end_date = validated_data.get('end_date',instance.end_date)
 
 
-
-
 class ChallengeReviewListSerializer(serializers.ModelSerializer):
 
     class Meta:

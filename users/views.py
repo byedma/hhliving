@@ -41,10 +41,18 @@ class LoginView(views.APIView):
             }, status=status.HTTP_401_UNAUTHORIZED)
 
 
+# class LogoutView(views.APIView):
+#     permission_classes = (permissions.IsAuthenticated,)
+#
+#     def post(self, request, format=None):
+#         logout(request)
+#
+#         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
 class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
-    def post(self, request, format=None):
+    def delete(self, request, format=None):
         logout(request)
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)

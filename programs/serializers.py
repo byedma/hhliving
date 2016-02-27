@@ -1,6 +1,6 @@
 from django.contrib.auth import update_session_auth_hash
 from rest_framework import serializers
-from .models import Program, ProgramReview, ProgramService
+from .models import Program, ProgramReview, ProgramService, HealthCondition
 
 
 class ProgramListSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class ProgramListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Program
         fields = ('id', 'name', 'short_desc', 'text', 'status', 'suggested_age_lower',
-                  'suggested_age_upper', 'available_to_gender','health_condition')
+                  'suggested_age_upper', 'available_to_gender', 'health_condition_id')
 
         def create(self, validated_data):
             print "Create......."
@@ -19,7 +19,7 @@ class ProgramServiceListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProgramService
-        fields = ('id', 'hobby_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
+        fields = ('id', 'program_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
 
         def create(self, validated_data):
             print "Create......."
@@ -44,8 +44,19 @@ class ProgramReviewListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProgramReview
-        fields = ('id', 'hobby_id', 'user_id', 'rating', 'comments')
+        fields = ('id', 'program_id', 'user_id', 'rating', 'comments')
 
         def create(self, validated_data):
             print "Create......."
             return ProgramReview.objects.create(**validated_data)
+
+
+class HealthConditionListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HealthCondition
+        fields = ('id','health_condition','body_part','gender')
+
+        def create(self, validated_data):
+            print "Create......."
+            return HealthCondition.objects.create(**validated_data)
