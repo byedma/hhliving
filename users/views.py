@@ -54,5 +54,5 @@ class LogoutView(views.APIView):
 
     def delete(self, request, format=None):
         logout(request)
-
+        request.session.flush()
         return Response({}, status=status.HTTP_204_NO_CONTENT)
