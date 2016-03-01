@@ -16,7 +16,7 @@ class ProgramListSerializer(serializers.ModelSerializer):
 
 
 class ProgramServiceListSerializer(serializers.ModelSerializer):
-
+    program_id = ProgramListSerializer()
     class Meta:
         model = ProgramService
         fields = ('id', 'program_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')

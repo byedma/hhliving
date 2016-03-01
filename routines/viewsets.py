@@ -68,6 +68,15 @@ class RoutineServiceListViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def list(self, request, *args, **kwargs):
+        user = request.GET.get('user_id',None)
+        queryset= self.queryset
+        if user is not None:
+            queryset = self.queryset.filter(user_id=user)
+        serializer = self.serializer_class(queryset,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
+
+
 
 class RoutineServiceUpdateViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'

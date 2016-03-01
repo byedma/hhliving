@@ -16,7 +16,7 @@ class RoutineListSerializer(serializers.ModelSerializer):
 
 
 class RoutineServiceListSerializer(serializers.ModelSerializer):
-
+    routine_id = RoutineListSerializer()
     class Meta:
         model = RoutineService
         fields = ('id', 'routine_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')

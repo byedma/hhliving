@@ -16,7 +16,7 @@ class ChallengeListSerializer(serializers.ModelSerializer):
 
 
 class ChallengeServiceListSerializer(serializers.ModelSerializer):
-
+    challenge_id = ChallengeListSerializer()
     class Meta:
         model = ChallengeService
         fields = ('id', 'challenge_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp',

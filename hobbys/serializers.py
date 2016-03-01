@@ -16,7 +16,7 @@ class HobbyListSerializer(serializers.ModelSerializer):
 
 
 class HobbyServiceListSerializer(serializers.ModelSerializer):
-
+    hobby_id = HobbyListSerializer()
     class Meta:
         model = HobbyService
         fields = ('id', 'hobby_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
