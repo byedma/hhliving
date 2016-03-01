@@ -36,7 +36,7 @@ class HabitListViewSet(viewsets.ModelViewSet):
     def subscribed_habits(self, request, id):
         #print id
         user =  id
-        data = Challenge.objects.raw('SELECT * FROM habits_habit WHERE id IN (SELECT habit_id_id '
+        data = Habit.objects.raw('SELECT * FROM habits_habit WHERE id IN (SELECT habit_id_id '
                                 'FROM habits_habitservice WHERE user_id_id=%s)',[user])
         print data
         serializer = self.serializer_class(data,many=True)
@@ -68,6 +68,16 @@ class HabitServiceListViewSet(viewsets.ModelViewSet):
         print serializer.errors
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    # url: habitservices?user_id='id'   gives the all the habits that user has subscribed to.
+    def list(self, request, *args, **kwargs):
+        user = request.GET.get('user_id',None)
+        queryset= self.queryset
+        if user is not None:
+            queryset = self.queryset.filter(user_id=user)
+        serializer = self.serializer_class(queryset,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
 
 class HabitServiceUpdateViewSet(viewsets.ModelViewSet):

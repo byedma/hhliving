@@ -17,6 +17,7 @@ class HabitListSerializer(serializers.ModelSerializer):
 
 class HabitServiceListSerializer(serializers.ModelSerializer):
 
+    habit_id = HabitListSerializer()
     class Meta:
         model = HabitService
         fields = ('id', 'habit_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
