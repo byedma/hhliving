@@ -22,6 +22,14 @@ class ChallengeServiceListSerializer(serializers.ModelSerializer):
         fields = ('id', 'challenge_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp',
                   'start_date','is_recurring','recurring_count','recurring_frequency')
 
+
+class NewChallengeServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ChallengeService
+        fields = ('id', 'challenge_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp',
+                  'start_date','is_recurring','recurring_count','recurring_frequency')
+
         def create(self, validated_data):
             print "Create......."
             return ChallengeService.objects.create(**validated_data)

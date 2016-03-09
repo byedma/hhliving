@@ -21,6 +21,13 @@ class ProgramServiceListSerializer(serializers.ModelSerializer):
         model = ProgramService
         fields = ('id', 'program_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
 
+
+class NewProgramServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ProgramService
+        fields = ('id', 'program_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
+
         def create(self, validated_data):
             print "Create......."
             return ProgramService.objects.create(**validated_data)

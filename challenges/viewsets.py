@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import detail_route, list_route
 from .models import ChallengeService, Challenge, ChallengeReview
-from .serializers import ChallengeListSerializer, ChallengeServiceListSerializer, ChallengeReviewListSerializer, ChallengeServiceUpdateSerializer
+from .serializers import ChallengeListSerializer, ChallengeServiceListSerializer, ChallengeReviewListSerializer, ChallengeServiceUpdateSerializer, NewChallengeServiceSerializer
 
 class ChallengeListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
@@ -76,6 +76,31 @@ class ChallengeServiceListViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(queryset,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
+
+class NewChallengeServiceViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = ChallengeService.objects.all()
+    serializer_class = NewChallengeServiceSerializer
+
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return (permissions.AllowAny(),)
+
+        if self.request.method == 'POST':
+            return (permissions.AllowAny(),)
+
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+
+            ChallengeService.objects.create(**serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        print serializer.errors
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ChallengeServiceUpdateViewSet(viewsets.ModelViewSet):

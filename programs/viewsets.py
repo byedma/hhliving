@@ -7,7 +7,7 @@ from habits.models import Habit
 from challenges.models import Challenge
 from hobbys.models import Hobby
 from routines.models import Routine
-from .serializers import ProgramListSerializer, ProgramServiceListSerializer, ProgramReviewListSerializer, ProgramServiceUpdateSerializer, HealthConditionListSerializer
+from .serializers import ProgramListSerializer, ProgramServiceListSerializer, ProgramReviewListSerializer, ProgramServiceUpdateSerializer, HealthConditionListSerializer, NewProgramServiceSerializer
 
 class ProgramListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
@@ -127,6 +127,31 @@ class ProgramServiceListViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(queryset,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
+
+class NewProgramServiceViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = ProgramService.objects.all()
+    serializer_class = NewProgramServiceSerializer
+
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return (permissions.AllowAny(),)
+
+        if self.request.method == 'POST':
+            return (permissions.AllowAny(),)
+
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+
+            ProgramService.objects.create(**serializer.validated_data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        print serializer.errors
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProgramServiceUpdateViewSet(viewsets.ModelViewSet):

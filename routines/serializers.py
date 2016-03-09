@@ -21,9 +21,17 @@ class RoutineServiceListSerializer(serializers.ModelSerializer):
         model = RoutineService
         fields = ('id', 'routine_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
 
+
+class NewRoutineServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = RoutineService
+        fields = ('id', 'routine_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
+
         def create(self, validated_data):
             print "Create......."
             return RoutineService.objects.create(**validated_data)
+
 
 
 class RoutineServiceUpdateSerializer(serializers.ModelSerializer):

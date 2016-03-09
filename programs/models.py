@@ -114,7 +114,8 @@ class ProgramService(HealthService):
     objects = ProgramServiceManager()
     program_id = models.ForeignKey('Program', on_delete=models.CASCADE,
                                  help_text='identifies the program template to which customer subscribed to')
-
+    class Meta:
+        unique_together = ('program_id', 'user_id',)
 
 class ProgramReviewManager(models.Manager):
 
@@ -139,4 +140,7 @@ class ProgramReview(Review):
     objects = ProgramReviewManager()
     program_id = models.ForeignKey('Program', on_delete=models.CASCADE,
                                  help_text='uniquely identifies the program')
+
+    class Meta:
+        unique_together = ('program_id', 'user_id',)
 

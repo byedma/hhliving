@@ -75,6 +75,9 @@ class ChallengeService(HealthService):
                                            help_text='identifies the frequency with which the event occurs')
     objects = ChallengeServiceManager()
 
+    class Meta:
+        unique_together = ('challenge_id', 'user_id',)
+
 class ChallengeReviewManager(models.Manager):
     def create(self,**validated_data):
         ChallengeReview = self.model(
@@ -94,6 +97,7 @@ class ChallengeReview(Review):
                                  help_text='uniquely identifies the challenge')
     objects = ChallengeReviewManager()
 
-
+    class Meta:
+        unique_together = ('challenge_id', 'user_id',)
 
 

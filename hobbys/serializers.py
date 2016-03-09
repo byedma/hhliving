@@ -21,10 +21,18 @@ class HobbyServiceListSerializer(serializers.ModelSerializer):
         model = HobbyService
         fields = ('id', 'hobby_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
 
+
+
+
+class NewHobbyServiceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HobbyService
+        fields = ('id', 'hobby_id', 'user_id', 'nick_name', 'status', 'end_date', 'creation_timestamp')
+
         def create(self, validated_data):
             print "Create......."
             return HobbyService.objects.create(**validated_data)
-
 
 class HobbyServiceUpdateSerializer(serializers.ModelSerializer):
 

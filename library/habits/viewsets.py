@@ -2,13 +2,13 @@ from rest_framework import permissions, viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import detail_route, list_route
-from .models import HobbyService, Hobby, HobbyReview
-from .serializers import HobbyListSerializer, HobbyServiceListSerializer, HobbyReviewListSerializer, HobbyServiceUpdateSerializer, NewHobbyServiceSerializer
+from .models import HabitService, Habit, HabitReview
+from .serializers import HabitListSerializer, HabitServiceListSerializer, HabitReviewListSerializer, HabitServiceUpdateSerializer, NewHabitServiceSerializer
 
-class HobbyListViewSet(viewsets.ModelViewSet):
+class HabitListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
-    queryset = Hobby.objects.all()
-    serializer_class = HobbyListSerializer
+    queryset = Habit.objects.all()
+    serializer_class = HabitListSerializer
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -23,29 +23,30 @@ class HobbyListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            Hobby.objects.create(**serializer.validated_data)
+            Habit.objects.create(**serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # url: hobbys/id/subscribed_hobbys    gives the all the hobbys that user has subscribed to.
+
+    # url: habits/id/subscribed_habits    gives the all the habits that user has subscribed to.
     @detail_route()
-    def subscribed_hobbys(self, request, id):
+    def subscribed_habits(self, request, id):
         #print id
         user =  id
-        data = Hobby.objects.raw('SELECT * FROM hobbys_hobby WHERE id IN (SELECT hobby_id_id '
-                                'FROM hobbys_hobbyservice WHERE user_id_id=%s)',[user])
+        data = Habit.objects.raw('SELECT * FROM habits_habit WHERE id IN (SELECT habit_id_id '
+                                'FROM habits_habitservice WHERE user_id_id=%s)',[user])
         print data
         serializer = self.serializer_class(data,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
 
 
-class HobbyServiceListViewSet(viewsets.ModelViewSet):
+class HabitServiceListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
-    queryset = HobbyService.objects.all()
-    serializer_class = HobbyServiceListSerializer
+    queryset = HabitService.objects.all()
+    serializer_class = HabitServiceListSerializer
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -60,14 +61,17 @@ class HobbyServiceListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            HobbyService.objects.create(**serializer.validated_data)
+            HabitService.objects.create(**serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+    # url: habitservices?user_id='id'   gives the all the habits that user has subscribed to.
     def list(self, request, *args, **kwargs):
+
         user = request.GET.get('user_id',None)
         queryset= self.queryset
         if user is not None:
@@ -76,10 +80,10 @@ class HobbyServiceListViewSet(viewsets.ModelViewSet):
         return Response(serializer.data,status=status.HTTP_200_OK)
 
 
-class NewHobbyServiceViewSet(viewsets.ModelViewSet):
+class NewHabitServiceViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
-    queryset = HobbyService.objects.all()
-    serializer_class = NewHobbyServiceSerializer
+    queryset = HabitService.objects.all()
+    serializer_class = NewHabitServiceSerializer
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -94,7 +98,7 @@ class NewHobbyServiceViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            HobbyService.objects.create(**serializer.validated_data)
+            HabitService.objects.create(**serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
@@ -102,10 +106,10 @@ class NewHobbyServiceViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class HobbyServiceUpdateViewSet(viewsets.ModelViewSet):
+class HabitServiceUpdateViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
-    queryset = HobbyService.objects.all()
-    serializer_class = HobbyServiceUpdateSerializer
+    queryset = HabitService.objects.all()
+    serializer_class = HabitServiceUpdateSerializer
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -120,11 +124,10 @@ class HobbyServiceUpdateViewSet(viewsets.ModelViewSet):
             return (permissions.AllowAny(),)
 
 
-
-class HobbyReviewListViewSet(viewsets.ModelViewSet):
+class HabitReviewListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
-    queryset = HobbyReview.objects.all()
-    serializer_class = HobbyReviewListSerializer
+    queryset = HabitReview.objects.all()
+    serializer_class = HabitReviewListSerializer
 
     def get_permissions(self):
         if self.request.method in permissions.SAFE_METHODS:
@@ -139,7 +142,7 @@ class HobbyReviewListViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
 
-            HobbyReview.objects.create(**serializer.validated_data)
+            HabitReview.objects.create(**serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         print serializer.errors
@@ -147,24 +150,9 @@ class HobbyReviewListViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request, *args, **kwargs):
-        hobby = request.GET.get('hobby_id',None)
+        habit = request.GET.get('habit_id',None)
         queryset= self.queryset
-        if hobby is not None:
-            queryset = self.queryset.filter(hobby_id=hobby)
+        if habit is not None:
+            queryset = self.queryset.filter(habit_id=habit)
         serializer = self.serializer_class(queryset,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
-
-
-    @detail_route()
-    def user_reviews(self, request, id):
-        #print id
-        user =  id
-        data = self.queryset.filter(user_id=user)
-        serializer = self.serializer_class(data,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
-    @list_route()
-    def reviews(self,request):
-        user = request.GET['user_id']
-        data = self.queryset.filter(user_id=user)
-        serializer = self.serializer_class(data,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)

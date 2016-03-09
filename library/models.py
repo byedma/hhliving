@@ -79,5 +79,23 @@ class Review(models.Model):
     class Meta:
         abstract = True
 
+
+class Communication(models.Model):
+
+    communication_status_choices = (
+        ('R', 'read'),
+        ('U', 'unread'),
+        ('A', 'acted'),
+    )
+
+    valid_start_date = models.DateField(help_text='date on which the communication is first created')
+    valid_end_date = models.DateField(null=True, help_text='date on which communication becomes invalid, becomes candidate for purging')
+    communication_status = models.CharField(default='U',  max_length=1, choices=communication_status_choices,
+                                    help_text='choice of the communication status')
+
+    class Meta:
+        abstract = True
+
+
 # ends
 

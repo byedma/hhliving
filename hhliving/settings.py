@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'routines',
     'challenges',
     'programs',
+    'ecomm',
 ]
 
 MIDDLEWARE_CLASSES = [
