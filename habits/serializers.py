@@ -5,10 +5,11 @@ from .models import Habit, HabitReview, HabitService
 
 class HabitListSerializer(serializers.ModelSerializer):
 
+    picture = serializers.ImageField(max_length=245, use_url=True)
     class Meta:
         model = Habit
         fields = ('id', 'name', 'short_desc', 'text', 'status', 'is_bad_habit', 'suggested_age_lower',
-                  'suggested_age_upper', 'available_to_gender')
+                  'suggested_age_upper', 'available_to_gender', 'picture')
 
         def create(self, validated_data):
             print "Create......."

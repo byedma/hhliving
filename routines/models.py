@@ -28,6 +28,7 @@ class RoutineManager(models.Manager):
             suggested_timeoftheday = validated_data.get('suggested_timeoftheday', None),
             suggested_timefrequency = validated_data.get('suggested_frequency', None),
             suggested_timeperiod = validated_data.get('suggested_timeperiod', None),
+            picture = validated_data.get('picture', None),
 
         )
 

@@ -40,6 +40,7 @@ class HealthComponent(models.Model):
     #created at UnderConstruction or Submitted, publish timestamp after status is set to published
     publish_timestamp = models.DateTimeField(null=True,
                                              help_text='date and time customer first subscribed to this component',)
+    picture = models.ImageField(default='pictures/HHLife2.png', upload_to='pictures/', max_length=254)
 
     class Meta:
         abstract = True

@@ -4,11 +4,11 @@ from .models import Routine, RoutineReview, RoutineService
 
 
 class RoutineListSerializer(serializers.ModelSerializer):
-
+    picture = serializers.ImageField(max_length=245, use_url=True)
     class Meta:
         model = Routine
         fields = ('id', 'name', 'short_desc', 'text', 'status', 'suggested_age_lower',
-                  'suggested_age_upper', 'available_to_gender','suggested_timeoftheday','suggested_timefrequency','suggested_timeperiod')
+                  'suggested_age_upper', 'available_to_gender','suggested_timeoftheday','suggested_timefrequency','suggested_timeperiod', 'picture')
 
         def create(self, validated_data):
             print "Create......."

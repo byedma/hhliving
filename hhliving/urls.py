@@ -63,7 +63,8 @@ router.register(r'new_programservices', programs_viewsets.NewProgramServiceViewS
 router.register(r'edit_programservices', programs_viewsets.ProgramServiceUpdateViewSet)
 router.register(r'programreviews', programs_viewsets.ProgramReviewListViewSet)
 router.register(r'healthconditions', programs_viewsets.HealthConditionListViewSet)
-
+router.register(r'programcomponents', programs_viewsets.ProgramComponentListViewSet)
+router.register(r'new_programcomponents', programs_viewsets.NewProgramComponentViewSet)
 #router.register(r'^edit_users/(?P<pk>[0-9]+)$/edit_circles/(?P<pk>[0-9]+)$', users_viewsets.CircleMemberViewSet)
 
 urlpatterns = [
@@ -74,4 +75,4 @@ urlpatterns = [
     url(r'^api/v1/login/$', users_views.LoginView.as_view(), name='login'),
     url(r'^api/v1/logout/$', users_views.LogoutView.as_view(), name='logout'),
 
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

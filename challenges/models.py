@@ -27,7 +27,8 @@ class ChallengeManager(models.Manager):
             suggested_age_upper = validated_data.get('suggested_age_upper', None),
             available_to_gender = validated_data.get('available_to_gender', None),
             start_date = validated_data.get('start_date',None),
-            can_be_recurring = validated_data.get('can_be_recurring',None)
+            can_be_recurring = validated_data.get('can_be_recurring',None),
+            picture = validated_data.get('picture', None),
         )
         Challenge.save(using=self._db)
         return Challenge

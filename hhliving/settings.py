@@ -161,3 +161,7 @@ AUTH_USER_MODEL = 'users.HUser'
 #}
 
 # CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+MEDIA_URL = '/media/'

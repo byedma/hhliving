@@ -26,6 +26,7 @@ class HobbyManager(models.Manager):
             suggested_age_lower = validated_data.get('suggested_age_lower', None),
             suggested_age_upper = validated_data.get('suggested_age_upper', None),
             available_to_gender = validated_data.get('available_to_gender', None),
+            picture = validated_data.get('picture', None),
         )
 
         Hobby.save(using=self._db)
