@@ -11,6 +11,8 @@ from .permissions import IsHUserOwner
 from .serializers import HUserRegisterSerializer,HUserUpdateSerializer
 from .serializers import CircleListSerializer, CircleUpdateSerializer
 from .serializers import CircleMemberListSerializer, CircleMemberSerializer
+from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 from django.contrib.auth import authenticate, login, logout
 import json
@@ -143,6 +145,9 @@ class CircleMemberListViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
 
             CircleMember.objects.create_circlemember(**serializer.validated_data)
+            #send_mail('test', 'hello', 'feedback@hhlife.in', ['bharath.yedma@gmail.com'], fail_silently=False)
+            email = EmailMessage('test', 'hello', to=['bharath.yedma@gmail.com'])
+            email.send()
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
 
         print serializer.errors

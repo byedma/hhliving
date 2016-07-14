@@ -34,13 +34,13 @@ class ProgramListViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # urls: /programs & /programs?health_condition_id='id'
-    def list(self, request, *args, **kwargs):
-        health_condition = request.GET.get('health_condition_id',None)
-        queryset= self.queryset
-        if health_condition is not None:
-            queryset = self.queryset.filter(health_condition_id=health_condition)
-        serializer = self.serializer_class(queryset,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+    # def list(self, request, *args, **kwargs):
+    #     health_condition = request.GET.get('health_condition_id',None)
+    #     queryset= self.queryset
+    #     if health_condition is not None:
+    #         queryset = self.queryset.filter(health_condition_id=health_condition)
+    #     serializer = self.serializer_class(queryset,many=True)
+    #     return Response(serializer.data,status=status.HTTP_200_OK)
 
 
     # url: programs/id/subscribed_programs    gives the all the programs that user has subscribed to.

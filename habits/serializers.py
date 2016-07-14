@@ -62,3 +62,13 @@ class HabitReviewListSerializer(serializers.ModelSerializer):
         def create(self, validated_data):
             print "Create......."
             return HabitReview.objects.create(**validated_data)
+
+
+class HabitUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Habit
+        fields = ('id', 'picture')
+
+        def update(self, instance, validated_data):
+            instance.picture = validated_data.get('picture', instance.picture)

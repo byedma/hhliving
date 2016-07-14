@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import detail_route, list_route
 from .models import HabitService, Habit, HabitReview
-from .serializers import HabitListSerializer, HabitServiceListSerializer, HabitReviewListSerializer, HabitServiceUpdateSerializer, NewHabitServiceSerializer
+from .serializers import HabitListSerializer, HabitServiceListSerializer, HabitReviewListSerializer, HabitServiceUpdateSerializer, NewHabitServiceSerializer, HabitUpdateSerializer
 
 class HabitListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
@@ -124,7 +124,6 @@ class HabitServiceUpdateViewSet(viewsets.ModelViewSet):
             return (permissions.AllowAny(),)
 
 
-
 class HabitReviewListViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     queryset = HabitReview.objects.all()
@@ -136,7 +135,6 @@ class HabitReviewListViewSet(viewsets.ModelViewSet):
 
         if self.request.method == 'POST':
             return (permissions.AllowAny(),)
-
 
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -157,3 +155,16 @@ class HabitReviewListViewSet(viewsets.ModelViewSet):
             queryset = self.queryset.filter(habit_id=habit)
         serializer = self.serializer_class(queryset,many=True)
         return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class HabitUpdateViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = Habit.objects.all()
+    serializer_class = HabitUpdateSerializer
+
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return (permissions.AllowAny(),)
+
+        if self.request.method == 'PUT':
+            return (permissions.AllowAny(),)

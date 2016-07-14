@@ -165,3 +165,12 @@ AUTH_USER_MODEL = 'users.HUser'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 MEDIA_URL = '/media/'
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.hhlife.in'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'feedback@hhlife.in'
+EMAIL_HOST_PASSWORD = 'sJXntd%4'
+DEFAULT_FROM_EMAIL = 'feedback@hhlife.in'
+SERVER_EMAIL = 'feedback@hhlife.in'
